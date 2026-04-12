@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dscp.lapidist.net/schema/v1.json",
+  "title": "DSCPDocument",
+  "description": "Design System Context Protocol document v1 — communicates design system constraints to generative AI models.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "specVersion",
+    "generatedAt",
+    "kernelSnapshotHash",
+    "tokenGraph",
+    "componentRegistry",
+    "deprecationLedger",
+    "violations",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "JSON Schema URI for this document."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semver of the DSCP spec this document conforms to.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of document generation."
+    },
+    "kernelSnapshotHash": {
+      "type": "string",
+      "description": "SHA-256 hash of the DSR kernel snapshot this document was derived from. Empty string if derived from live kernel state."
+    },
+    "tokenGraph": {
+      "$ref": "#/$defs/DSCPTokenGraph"
+    },
+    "componentRegistry": {
+      "$ref": "#/$defs/DSCPComponentSummary"
+    },
+    "deprecationLedger": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/DSCPDeprecationEntry" }
+    },
+    "violations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/DSCPViolationPattern" }
+    },
+    "rules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/DSCPRuleSummary" }
+    }
+  },
+  "$defs": {
+    "DSCPTokenEntry": {
+      "type": "object",
+      "required": ["pointer", "name", "type", "value", "deprecated"],
+      "additionalProperties": false,
+      "properties": {
+        "pointer": { "type": "string", "description": "JSON pointer to this token in the DTIF document." },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "value": { "type": "string", "description": "Serialised token value." },
+        "deprecated": { "type": "boolean" },
+        "replacement": { "type": "string" }
+      }
+    },
+    "DSCPTokenGraph": {
+      "type": "object",
+      "required": ["totalCount", "byType"],
+      "additionalProperties": false,
+      "properties": {
+        "totalCount": { "type": "integer", "minimum": 0 },
+        "byType": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/DSCPTokenEntry" }
+          }
+        }
+      }
+    },
+    "DSCPComponentEntry": {
+      "type": "object",
+      "required": ["name", "package", "deprecated"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "package": { "type": "string" },
+        "version": { "type": "string" },
+        "deprecated": { "type": "boolean" },
+        "replacedBy": { "type": "string" }
+      }
+    },
+    "DSCPComponentSummary": {
+      "type": "object",
+      "required": ["totalCount", "components"],
+      "additionalProperties": false,
+      "properties": {
+        "totalCount": { "type": "integer", "minimum": 0 },
+        "components": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DSCPComponentEntry" }
+        }
+      }
+    },
+    "DSCPDeprecationEntry": {
+      "type": "object",
+      "required": ["pointer"],
+      "additionalProperties": false,
+      "properties": {
+        "pointer": { "type": "string" },
+        "replacement": { "type": "string" },
+        "since": { "type": "string" },
+        "reason": { "type": "string" }
+      }
+    },
+    "DSCPViolationPattern": {
+      "type": "object",
+      "required": ["property", "rawValue", "frequency", "correctToken", "agentAttributed"],
+      "additionalProperties": false,
+      "properties": {
+        "property": { "type": "string" },
+        "rawValue": { "type": "string" },
+        "frequency": { "type": "integer", "minimum": 1 },
+        "correctToken": { "type": ["string", "null"] },
+        "agentAttributed": { "type": "boolean" }
+      }
+    },
+    "DSCPRuleSummary": {
+      "type": "object",
+      "required": ["id", "category", "description", "enabled", "severity", "fixable"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "enabled": { "type": "boolean" },
+        "severity": { "type": "string", "enum": ["error", "warn", "off"] },
+        "fixable": { "type": "boolean" }
+      }
+    }
+  }
+}

@@ -7,17 +7,29 @@ import type {
   DSCPDeprecationEntry,
   DSCPViolationPattern,
   DSCPRuleSummary,
-  DtifFlattenedToken,
-  TokenType,
 } from './types.js';
 
 // ---------------------------------------------------------------------------
-// Generator input — mirrors the DSR KernelState shape without importing DSR
+// Generator input — tool-agnostic; no dependency on @lapidist/dtif-parser
 // ---------------------------------------------------------------------------
 
+/**
+ * Minimal token shape required by the DSCP generator.
+ * Both @lapidist/dtif-parser DtifFlattenedToken objects and simpler
+ * representations (e.g. dtifx build output) satisfy this interface.
+ */
+export interface TokenInput {
+  readonly pointer: string;
+  readonly name: string;
+  readonly type?: string;
+  readonly value?: unknown;
+}
+
 export interface TokenGraphInput {
-  readonly tokens: ReadonlyMap<string, DtifFlattenedToken>;
-  readonly byType: ReadonlyMap<TokenType, readonly DtifFlattenedToken[]>;
+  /** All tokens keyed by pointer. `.size` is used for `totalCount`. */
+  readonly tokens: ReadonlyMap<string, TokenInput>;
+  /** Tokens pre-grouped by type string. */
+  readonly byType: ReadonlyMap<string, readonly TokenInput[]>;
 }
 
 export interface RuleInput {
@@ -74,7 +86,7 @@ export interface GeneratorInput {
 }
 
 // ---------------------------------------------------------------------------
-// DSCP_SCHEMA_URI
+// Constants
 // ---------------------------------------------------------------------------
 
 export const DSCP_SCHEMA_URI = 'https://dscp.lapidist.net/schema/v1.json';
@@ -85,17 +97,16 @@ export const DSCP_SPEC_VERSION = '1.0.0';
 // Token serialisation
 // ---------------------------------------------------------------------------
 
-function tokenValueString(token: DtifFlattenedToken): string {
-  const v = token.value;
-  if (v === null || v === undefined) return '';
-  if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
-    return String(v);
+function tokenValueString(value: unknown): string {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
   }
-  return JSON.stringify(v);
+  return JSON.stringify(value);
 }
 
 function toTokenEntry(
-  token: DtifFlattenedToken,
+  token: TokenInput,
   deprecationLedger: DeprecationLedgerInput,
 ): DSCPTokenEntry {
   const entry = deprecationLedger.entries.get(token.pointer);
@@ -103,7 +114,7 @@ function toTokenEntry(
     pointer: token.pointer,
     name: token.name,
     type: token.type ?? 'unknown',
-    value: tokenValueString(token),
+    value: tokenValueString(token.value),
     deprecated: entry !== undefined,
     replacement: entry?.replacement,
   };
@@ -113,7 +124,7 @@ function buildTokenGraph(
   input: TokenGraphInput,
   deprecationLedger: DeprecationLedgerInput,
 ): DSCPTokenGraph {
-  const byType: Partial<Record<TokenType, DSCPTokenEntry[]>> = {};
+  const byType: Record<string, DSCPTokenEntry[]> = {};
 
   for (const [type, tokens] of input.byType) {
     const entries = tokens.map((t) => toTokenEntry(t, deprecationLedger));

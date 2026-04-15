@@ -9,8 +9,6 @@ export type {
   DSCPRuleSummary,
   DSCPRuleSeverity,
   DSCPSectionTag,
-  DtifFlattenedToken,
-  TokenType,
 } from './types.js';
 
 export {
@@ -34,6 +32,7 @@ export {
 
 export type {
   GeneratorInput,
+  TokenInput,
   TokenGraphInput,
   RuleInput,
   ComponentInput,

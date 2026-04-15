@@ -1,7 +1,3 @@
-import type { DtifFlattenedToken, TokenType } from '@lapidist/dtif-parser';
-
-export type { DtifFlattenedToken, TokenType };
-
 // ---------------------------------------------------------------------------
 // DSCP document — top-level envelope
 // ---------------------------------------------------------------------------
@@ -39,8 +35,8 @@ export interface DSCPTokenEntry {
 export interface DSCPTokenGraph {
   /** Total number of tokens in the design system. */
   readonly totalCount: number;
-  /** Tokens grouped by DTIF type. */
-  readonly byType: Partial<Record<TokenType, DSCPTokenEntry[]>>;
+  /** Tokens grouped by type string (e.g. "color", "dimension"). */
+  readonly byType: Partial<Record<string, DSCPTokenEntry[]>>;
 }
 
 // ---------------------------------------------------------------------------
@@ -104,11 +100,11 @@ export interface DSCPRuleSummary {
 }
 
 // ---------------------------------------------------------------------------
-// Markdown section markers used in DESIGN_SYSTEM.md
+// Markdown section marker tags used in DESIGN_SYSTEM.md
 // ---------------------------------------------------------------------------
 
 export type DSCPSectionTag =
-  | `dscp:tokens:${TokenType}`
+  | `dscp:tokens:${string}`
   | 'dscp:violations'
   | 'dscp:components'
   | 'dscp:rules';

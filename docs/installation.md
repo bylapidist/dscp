@@ -14,11 +14,6 @@ pnpm add @lapidist/dscp
 The package ships TypeScript declarations and is ESM-only. It requires
 `"type": "module"` in your `package.json` or a `.mjs` extension on your entry point.
 
-## Peer dependency
-
-`@lapidist/dscp` depends on `@lapidist/dtif-parser` for token type definitions. It is
-listed as a direct dependency and installed automatically.
-
 ## TypeScript configuration
 
 The package targets ES2022 and uses `NodeNext` module resolution. Your `tsconfig.json`

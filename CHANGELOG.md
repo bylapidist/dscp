@@ -1,5 +1,11 @@
 # @lapidist/dscp — Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+- 82d3639: docs(installation): remove incorrect dtif-parser peer dependency claim — dscp has no dependency on dtif-parser
+
 ## 0.2.0
 
 ### Minor Changes

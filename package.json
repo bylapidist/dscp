@@ -49,7 +49,7 @@
   "homepage": "https://dscp.lapidist.net",
   "license": "MIT",
   "devDependencies": {
-    "@changesets/cli": "2.30.0",
+    "@changesets/cli": "2.31.0",
     "@lapidist/eslint-config": "1.0.0",
     "@types/node": "22.19.17",
     "@typescript-eslint/eslint-plugin": "8.58.2",

@@ -89,7 +89,8 @@ export interface GeneratorInput {
 // Constants
 // ---------------------------------------------------------------------------
 
-export const DSCP_SCHEMA_URI = 'https://dscp.lapidist.net/schema/v1.json';
+export const DSCP_SCHEMA_URI =
+  'https://raw.githubusercontent.com/bylapidist/dscp/main/schema/v1.json';
 
 export const DSCP_SPEC_VERSION = '1.0.0';
 

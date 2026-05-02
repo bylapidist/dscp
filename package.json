@@ -1,6 +1,6 @@
 {
   "name": "@lapidist/dscp",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Design System Context Protocol — versioned spec and types for communicating design system constraints to generative AI models",
   "type": "module",
   "main": "dist/index.js",

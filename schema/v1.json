@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://dscp.lapidist.net/schema/v1.json",
+  "$id": "https://raw.githubusercontent.com/bylapidist/dscp/main/schema/v1.json",
   "title": "DSCPDocument",
   "description": "Design System Context Protocol document v1 — communicates design system constraints to generative AI models.",
   "type": "object",

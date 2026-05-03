@@ -34,6 +34,6 @@ should include:
 ```ts
 import { DSCP_SCHEMA_URI, DSCP_SPEC_VERSION } from '@lapidist/dscp';
 
-console.log(DSCP_SCHEMA_URI);    // https://dscp.lapidist.net/schema/v1.json
+console.log(DSCP_SCHEMA_URI);    // https://raw.githubusercontent.com/bylapidist/dscp/main/schema/v1.json
 console.log(DSCP_SPEC_VERSION);  // 1.0.0
 ```

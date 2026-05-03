@@ -1,5 +1,16 @@
 # @lapidist/dscp — Changelog
 
+## 0.2.4
+
+### Patch Changes
+
+- 2f41b23: docs(installation): remove incorrect dtif-parser peer dependency claim — dscp has no dependency on dtif-parser
+- 2f41b23: fix(schema): point DSCP_SCHEMA_URI to GitHub raw URL
+
+  `dscp.lapidist.net/schema/v1.json` is not yet live. Point to the GitHub
+  raw URL (`raw.githubusercontent.com/bylapidist/dscp/main/schema/v1.json`)
+  so generated DSCP documents reference a resolvable schema immediately.
+
 ## 0.2.3
 
 ### Patch Changes
